@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learn Fetch & Promises</title>
+  </head>
+  <body>
+    <h1>Open the console</h1>
+    <script>
+      // challenge 1
+      const helloPikachu = fetch("https://pokeapi.co/api/v2/pokemon/pikachu");
+      console.log(helloPikachu);
+
+      // challenge 2
+      const pikaPromise = fetch("https://pokeapi.co/api/v2/pokemon/pikachu");
+      pikaPromise.then(pika => console.log(pika));
+
+      // challenge 3
+      const bulbaPromise = fetch("https://pokeapi.co/api/v2/pokemon/pikachu");
+      bulbaPromise.then(response => response.json())
+      .then(bulba => console.log(bulba));
+
+      // challenge 4
+      const errorPromise = fetch();
+      errorPromise.then(response => response.json())
+      .then(notError => console.log(notError))
+      .catch(error => console.log(error));
+
+      /*fetch("https://pokeapi.co/api/v2/pokemon/pikachu")
+      .then(response => response.json())
+      .then(response => console.log(response))*/
+
+      // Task 1
+      function getUser(username) {
+        return fetch(`https://api.github.com/users/${username}`)
+        .then(response => response.json());
+      }
+      getUser("maxitect")
+      .then(user => console.log(user))
+      .catch(error => console.log(error));
+
+      // Task 2
+      function getRepos(userResponse) {
+        return fetch(userResponse.repos_url)
+        .then(response => response.json())
+        .then(repos => console.log(repos));
+      }
+      getUser("maxitect")
+      .then(user => getRepos(user))
+      .catch(error => console.log(error));
+
+      // Task 3
+      function getMultipleUsers(...usernames) {
+        return Promise.all(usernames.map(user => getUser(user)))
+        .then(user => console.log(user));
+      }
+      getMultipleUsers('maxitect', 'becska'); // 403 error - need access token
+    </script>
+  </body>
+</html>
